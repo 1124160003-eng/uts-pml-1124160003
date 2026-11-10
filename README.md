@@ -1,5 +1,5 @@
-**UTS – Aplikasi Mobile  (Flutter)**
+## UTS – Aplikasi Mobile (Flutter)
 
-**NAMA** : Given Ezra Dominic Keo
-**NIM** : 1124160003
-**KELAS** : Software Engineering (2)
+* **NAMA** : Given Ezra Dominic Keo
+* **NIM** : 1124160003
+* **KELAS** : Software Engineering (2)
