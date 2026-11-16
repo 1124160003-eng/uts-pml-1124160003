@@ -1,7 +1,8 @@
 // lib/screens/profile_page.dart
 import 'package:flutter/material.dart';
 import '../models/profile.dart';
-import '../widgets/info_tile.dart'; 
+import '../widgets/info_tile.dart';
+import 'edit_profile_page.dart'; 
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -19,6 +20,25 @@ class _ProfilePageState extends State<ProfilePage> {
     _profile = initialProfile;
   }
 
+  // --- FUNGSI NAVIGASI KE EDIT PROFIL ---
+  Future<void> _goToEditProfile() async {
+    // Membuka halaman edit dan menunggu hasil (dataBaru) dikembalikan
+    final Profile? hasil = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditProfilePage(currentProfile: _profile),
+      ),
+    );
+
+    // Jika hasil tidak null (artinya user menekan Simpan, bukan tombol Back)
+    if (hasil != null) {
+      setState(() {
+        // Perbarui state dengan data baru agar UI langsung berubah
+        _profile = hasil;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -27,6 +47,14 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: const Text('Profil Mahasiswa'),
         centerTitle: true,
+        actions: [
+          // Tombol Edit di pojok kanan atas
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: _goToEditProfile,
+            tooltip: 'Edit Profil',
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -35,15 +63,13 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               const SizedBox(height: 20),
               
-              // 1. FOTO PROFIL
               CircleAvatar(
                 radius: 60,
-                backgroundImage: const AssetImage('assets/images/foto_profile.jpeg'),
+                backgroundImage: const AssetImage('assets/images/foto_profil.jpg'),
                 onBackgroundImageError: (exception, stackTrace) {},
               ),
               const SizedBox(height: 16),
 
-              // 2. NAMA, NIM, PRODI
               Text(
                 _profile.nama,
                 style: textTheme.headlineSmall?.copyWith(
@@ -61,14 +87,12 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 8),
               
-              // KELAS
               Chip(
                 label: Text(_profile.kelas),
                 backgroundColor: Theme.of(context).colorScheme.primaryContainer,
               ),
               const SizedBox(height: 16),
 
-              // 3. BIO SINGKAT
               Text(
                 _profile.bio,
                 style: textTheme.bodyMedium,
@@ -76,7 +100,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 24),
 
-              // 4. KARTU INFORMASI (Menggunakan InfoTile)
               Card(
                 elevation: 2,
                 child: Column(
