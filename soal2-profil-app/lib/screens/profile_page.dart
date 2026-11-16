@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import '../models/profile.dart';
 import '../widgets/info_tile.dart';
-import 'edit_profile_page.dart'; 
+import 'edit_profile_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -20,9 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _profile = initialProfile;
   }
 
-  // --- FUNGSI NAVIGASI KE EDIT PROFIL ---
   Future<void> _goToEditProfile() async {
-    // Membuka halaman edit dan menunggu hasil (dataBaru) dikembalikan
     final Profile? hasil = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -30,10 +28,8 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
 
-    // Jika hasil tidak null (artinya user menekan Simpan, bukan tombol Back)
     if (hasil != null) {
       setState(() {
-        // Perbarui state dengan data baru agar UI langsung berubah
         _profile = hasil;
       });
     }
@@ -48,7 +44,6 @@ class _ProfilePageState extends State<ProfilePage> {
         title: const Text('Profil Mahasiswa'),
         centerTitle: true,
         actions: [
-          // Tombol Edit di pojok kanan atas
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: _goToEditProfile,
@@ -56,6 +51,62 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
+
+      // 1. KOMPONEN TAMBAHAN: DRAWER (Menu Samping)
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  const Icon(Icons.person, size: 50, color: Colors.white),
+                  const SizedBox(height: 8),
+                  Text(
+                    _profile.nama,
+                    style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    _profile.nim,
+                    style: const TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Halaman Profil'),
+              onTap: () {
+                Navigator.pop(context); // Tutup drawer
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('Tentang Saya'),
+              onTap: () {
+                Navigator.pop(context); // Tutup drawer dulu
+                Navigator.pushNamed(context, '/about'); // Buka halaman about
+              },
+            ),
+          ],
+        ),
+      ),
+
+      // 2. KOMPONEN TAMBAHAN: FLOATING ACTION BUTTON
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Terima kasih telah melihat profil saya!')),
+          );
+        },
+        child: const Icon(Icons.message),
+      ),
+
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

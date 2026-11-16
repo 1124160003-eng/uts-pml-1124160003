@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 import 'models/profile.dart';
 import 'screens/login_page.dart';
-import 'screens/profile_page.dart'; // <-- Tambahan import
+import 'screens/profile_page.dart';
+import 'screens/about_page.dart'; 
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.indigo, 
+          seedColor: Colors.indigo,
           brightness: Brightness.light,
         ),
       ),
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
       
       routes: {
         '/login': (context) => const LoginPage(),
-        '/profile': (context) => const ProfilePage(), // <-- Tambahan rute
+        '/profile': (context) => const ProfilePage(),
+        '/about': (context) => const AboutPage(), // <-- Daftarkan rute About
       },
     );
   }
