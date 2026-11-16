@@ -1,6 +1,7 @@
 // lib/screens/profile_page.dart
 import 'package:flutter/material.dart';
 import '../models/profile.dart';
+import '../widgets/info_tile.dart'; 
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -10,13 +11,11 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // State ini menampung data profil yang bisa berubah
   late Profile _profile;
 
   @override
   void initState() {
     super.initState();
-    // Mengambil data awal dari model profile.dart
     _profile = initialProfile;
   }
 
@@ -29,7 +28,6 @@ class _ProfilePageState extends State<ProfilePage> {
         title: const Text('Profil Mahasiswa'),
         centerTitle: true,
       ),
-      // Body dibuat bisa di-scroll agar aman dari overflow
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -37,18 +35,15 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               const SizedBox(height: 20),
               
-              // 1. Foto Profil menggunakan CircleAvatar
+              // 1. FOTO PROFIL
               CircleAvatar(
-                radius: 50,
-                // Membaca file gambar dari assets yang sudah didaftarkan di pubspec.yaml
+                radius: 60,
                 backgroundImage: const AssetImage('assets/images/foto_profile.jpeg'),
-                // Fallback jika gambar gagal dimuat atau belum disiapkan
                 onBackgroundImageError: (exception, stackTrace) {},
-                child: null, 
               ),
               const SizedBox(height: 16),
 
-              // 2. Nama, NIM, dan Prodi
+              // 2. NAMA, NIM, PRODI
               Text(
                 _profile.nama,
                 style: textTheme.headlineSmall?.copyWith(
@@ -66,14 +61,14 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 8),
               
-              // Kelas
+              // KELAS
               Chip(
                 label: Text(_profile.kelas),
                 backgroundColor: Theme.of(context).colorScheme.primaryContainer,
               ),
               const SizedBox(height: 16),
 
-              // 3. Bio Singkat
+              // 3. BIO SINGKAT
               Text(
                 _profile.bio,
                 style: textTheme.bodyMedium,
@@ -81,31 +76,38 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 24),
 
+              // 4. KARTU INFORMASI (Menggunakan InfoTile)
               Card(
                 elevation: 2,
                 child: Column(
                   children: [
-                    ListTile(
-                      leading: const Icon(Icons.email),
-                      title: const Text('Email'),
-                      subtitle: Text(_profile.email),
+                    InfoTile(
+                      icon: Icons.email,
+                      label: 'Email',
+                      value: _profile.email,
                     ),
                     const Divider(height: 1),
-                    ListTile(
-                      leading: const Icon(Icons.phone),
-                      title: const Text('No. HP'),
-                      subtitle: Text(_profile.hp),
+                    InfoTile(
+                      icon: Icons.phone,
+                      label: 'No. HP',
+                      value: _profile.hp,
                     ),
                     const Divider(height: 1),
-                    ListTile(
-                      leading: const Icon(Icons.code),
-                      title: const Text('GitHub'),
-                      subtitle: Text(_profile.github),
+                    InfoTile(
+                      icon: Icons.school,
+                      label: 'Kelas',
+                      value: _profile.kelas,
+                    ),
+                    const Divider(height: 1),
+                    InfoTile(
+                      icon: Icons.code,
+                      label: 'GitHub',
+                      value: _profile.github,
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
             ],
           ),
         ),
