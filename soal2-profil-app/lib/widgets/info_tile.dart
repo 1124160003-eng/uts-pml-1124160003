@@ -1,4 +1,3 @@
-// lib/widgets/info_tile.dart
 import 'package:flutter/material.dart';
 
 class InfoTile extends StatelessWidget {

@@ -1,4 +1,3 @@
-// lib/screens/about_page.dart
 import 'package:flutter/material.dart';
 
 class AboutPage extends StatelessWidget {
@@ -12,11 +11,9 @@ class AboutPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Tentang Saya'),
       ),
-      // Menggunakan ListView untuk memenuhi syarat "ditampilkan dengan ListView"
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          // --- BAGIAN KEAHLIAN / HOBI ---
           Text(
             'Keahlian & Hobi',
             style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -48,10 +45,9 @@ class AboutPage extends StatelessWidget {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 24),
 
-          // --- BAGIAN RIWAYAT PENDIDIKAN ---
           Text(
             'Riwayat Pendidikan',
             style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),

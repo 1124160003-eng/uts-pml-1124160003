@@ -1,4 +1,3 @@
-// lib/main.dart
 import 'package:flutter/material.dart';
 import 'models/profile.dart';
 import 'screens/login_page.dart';
@@ -9,10 +8,8 @@ void main() {
   runApp(const MyApp());
 }
 
-// Variabel global untuk mengontrol Dark Mode
 final ValueNotifier<ThemeMode> appThemeNotifier = ValueNotifier(ThemeMode.system);
 
-// Variabel global untuk data profil
 Profile currentProfile = initialProfile;
 
 class MyApp extends StatelessWidget {

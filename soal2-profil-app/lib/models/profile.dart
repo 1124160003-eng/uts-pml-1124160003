@@ -1,4 +1,3 @@
-// lib/models/profile.dart
 class Profile {
   final String nama;
   final String nim;

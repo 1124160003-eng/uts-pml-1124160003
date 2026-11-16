@@ -1,9 +1,8 @@
-// lib/screens/profile_page.dart
 import 'package:flutter/material.dart';
 import '../models/profile.dart';
 import '../widgets/info_tile.dart';
 import 'edit_profile_page.dart';
-import '../main.dart'; // Import main.dart untuk akses appThemeNotifier
+import '../main.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -48,14 +47,26 @@ class _ProfilePageState extends State<ProfilePage> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: _goToEditProfile,
-            tooltip: 'Edit Profil',
+            icon: Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode),
+            onPressed: () {
+              appThemeNotifier.value =
+                  isDarkMode ? ThemeMode.light : ThemeMode.dark;
+            },
+            tooltip: isDarkMode ? 'Mode Terang' : 'Mode Gelap',
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/login',
+                (route) => false,
+              );
+            },
+            tooltip: 'Keluar',
           ),
         ],
       ),
-
-      // 1. DRAWER (Memenuhi syarat Scaffold)
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -98,8 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
               },
             ),
             const Divider(),
-            
-            // SWITCH DARK MODE
+
             SwitchListTile(
               secondary: Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode),
               title: const Text('Mode Gelap'),
@@ -112,8 +122,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       ),
-
-      // 2. BOTTOM NAVIGATION (Memenuhi syarat Scaffold tambahan)
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: (int index) {
@@ -133,28 +141,21 @@ class _ProfilePageState extends State<ProfilePage> {
           NavigationDestination(icon: Icon(Icons.info), label: 'Tentang'),
         ],
       ),
-
-      // 3. FLOATING ACTION BUTTON (Memenuhi syarat Scaffold tambahan)
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text('Terima kasih telah melihat profil saya!')),
-          );
-        },
-        child: const Icon(Icons.message),
+        onPressed: _goToEditProfile,
+        tooltip: 'Edit Profil',
+        child: const Icon(Icons.edit),
       ),
-
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
               const SizedBox(height: 20),
-              
+
               CircleAvatar(
                 radius: 60,
-                backgroundImage: const AssetImage('assets/images/foto_profil.jpg'),
+                backgroundImage: const AssetImage('assets/images/foto_profile.jpeg'),
                 onBackgroundImageError: (exception, stackTrace) {},
               ),
               const SizedBox(height: 16),
@@ -175,7 +176,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
-              
+
               Chip(
                 label: Text(_profile.kelas),
                 backgroundColor: Theme.of(context).colorScheme.primaryContainer,
@@ -219,7 +220,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 80), // Spasi bawah agar tidak tertutup FAB
+              const SizedBox(height: 80),
             ],
           ),
         ),
