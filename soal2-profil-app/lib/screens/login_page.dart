@@ -9,10 +9,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // 1. Kunci Form dan Controller
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -22,33 +23,33 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Email tidak boleh kosong';
-    }
-    // Regex sederhana untuk cek format email
+    if (value == null || value.isEmpty) return 'Email tidak boleh kosong';
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    if (!emailRegex.hasMatch(value)) {
-      return 'Format email tidak valid';
-    }
+    if (!emailRegex.hasMatch(value)) return 'Format email tidak valid';
     return null;
   }
 
   String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Password tidak boleh kosong';
-    }
-    if (value.length < 5) {
-      return 'Password minimal 5 karakter';
-    }
+    if (value == null || value.isEmpty) return 'Password tidak boleh kosong';
+    if (value.length < 5) return 'Password minimal 5 karakter';
     return null;
   }
 
-  void _submitLogin() {
-    // Cek apakah semua inputan valid
+  Future<void> _submitLogin() async {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login Berhasil (Sementara)')),
-      );
+      setState(() {
+        _isLoading = true;
+      });
+
+      await Future.delayed(const Duration(seconds: 2));
+
+      if (!mounted) return;
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      Navigator.pushReplacementNamed(context, '/profile');
     }
   }
 
@@ -68,7 +69,6 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 40),
-        
                 const Icon(Icons.account_circle, size: 100, color: Colors.indigo),
                 const SizedBox(height: 20),
                 Text(
@@ -79,8 +79,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                 ),
                 const SizedBox(height: 40),
-
-                // Input Email
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -90,29 +88,33 @@ class _LoginPageState extends State<LoginPage> {
                     border: OutlineInputBorder(),
                   ),
                   validator: _validateEmail,
+                  enabled: !_isLoading,
                 ),
                 const SizedBox(height: 16),
-
-                // Input Password
                 TextFormField(
                   controller: _passwordController,
-                  obscureText: true, 
+                  obscureText: true,
                   decoration: const InputDecoration(
                     labelText: 'Password',
                     prefixIcon: Icon(Icons.lock),
                     border: OutlineInputBorder(),
                   ),
                   validator: _validatePassword,
+                  enabled: !_isLoading,
                 ),
                 const SizedBox(height: 32),
-
-                // Tombol Login
                 ElevatedButton(
-                  onPressed: _submitLogin,
+                  onPressed: _isLoading ? null : _submitLogin,
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
-                  child: const Text('Masuk', style: TextStyle(fontSize: 16)),
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Text('Masuk', style: TextStyle(fontSize: 16)),
                 ),
               ],
             ),
