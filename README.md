@@ -49,7 +49,7 @@
 
 | Halaman Login | Halaman Profil | Halaman Edit Profil |
 |:---:|:---:|:---:|
-| ![Login](assets/images/loginPage.jpeg) | ![Profil](assets/images/ProfilePage.jpeg) | ![Edit Profil](assets/images/EditProfilePage.jpeg) |
+| ![Login](soal2-profil-app/assets/images/loginPage.jpeg) | ![Profil](soal2-profil-app/assets/images/ProfilePage.jpeg) | ![Edit Profil](soal2-profil-app/assets/images/EditProfilePage.jpeg) |
 
 ---
 
