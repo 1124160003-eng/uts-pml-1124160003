@@ -13,8 +13,6 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final _formKey = GlobalKey<FormState>();
-  
-  // Controller untuk setiap field
   late TextEditingController _namaController;
   late TextEditingController _emailController;
   late TextEditingController _hpController;
@@ -23,7 +21,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void initState() {
     super.initState();
-    // Mengisi nilai awal (initial value) dari data profil saat ini
     _namaController = TextEditingController(text: widget.currentProfile.nama);
     _emailController = TextEditingController(text: widget.currentProfile.email);
     _hpController = TextEditingController(text: widget.currentProfile.hp);
@@ -39,7 +36,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     super.dispose();
   }
 
-  // --- FUNGSI VALIDASI ---
   String? _validateNama(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'Nama wajib diisi';
@@ -56,32 +52,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   String? _validateHp(String? value) {
     if (value == null || value.isEmpty) return 'Nomor HP tidak boleh kosong';
-    
-    // Hanya boleh angka
     final numberRegex = RegExp(r'^[0-9]+$');
-    if (!numberRegex.hasMatch(value)) {
-      return 'Nomor HP hanya boleh berisi angka';
-    }
-    
-    // Panjang 10 sampai 13 digit
-    if (value.length < 10 || value.length > 13) {
-      return 'Nomor HP harus 10-13 digit';
-    }
+    if (!numberRegex.hasMatch(value)) return 'Nomor HP hanya boleh berisi angka';
+    if (value.length < 10 || value.length > 13) return 'Nomor HP harus 10-13 digit';
     return null;
   }
 
-  // --- FUNGSI SIMPAN DATA ---
   void _simpanData() {
     if (_formKey.currentState!.validate()) {
-      // Membuat objek Profile baru menggunakan copyWith
       final dataBaru = widget.currentProfile.copyWith(
         nama: _namaController.text,
         email: _emailController.text,
         hp: _hpController.text,
         bio: _bioController.text,
       );
-
-      // Mengembalikan data baru ke halaman sebelumnya (ProfilePage)
       Navigator.pop(context, dataBaru);
     }
   }
@@ -100,6 +84,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // --- PENYEMPURNAAN UI: Teks Instruksi ---
+                Text(
+                  'Perbarui informasi profil Anda di bawah ini.',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                ),
+                const SizedBox(height: 24),
+                // -----------------------------------------
+
                 TextFormField(
                   controller: _namaController,
                   decoration: const InputDecoration(
