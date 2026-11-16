@@ -1,5 +1,4 @@
 // lib/models/profile.dart
-
 class Profile {
   final String nama;
   final String nim;
@@ -43,7 +42,6 @@ class Profile {
     );
   }
 }
-
 
 const Profile initialProfile = Profile(
   nama: 'Given Ezra Dominic Keo',
